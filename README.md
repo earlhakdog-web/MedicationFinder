@@ -1,36 +1,78 @@
-:root{
-  --emerald: #059669;
-  --emerald-dark: #047857;
-  --muted: #6b7280;
-  --bg: #f8fafc;
-  --card: #ffffff;
-}
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { motion } from "framer-motion";
 
-body,html,#root{height:100%;margin:0;font-family:Arial, Helvetica, sans-serif;background:var(--bg);color:#111827;}
 
-.container{max-width:1000px;margin:0 auto;padding:0 20px;}
-.header{background:#fff;border-bottom:1px solid rgba(5,150,105,0.12);position:sticky;top:0;z-index:40;}
-.header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 0;}
-.brand{display:flex;align-items:center;gap:12px;}
-.logo{width:44px;height:44px;object-fit:contain;border-radius:6px;}
-.brand h1{font-size:18px;color:var(--emerald);margin:0;font-weight:700;}
-.nav a{margin-left:18px;color:var(--muted);text-decoration:none;font-size:14px;}
-.nav a:hover{color:var(--emerald-dark)}
-.hero{background:var(--emerald);color:#fff;padding:48px 0;text-align:center;}
-.hero h2{font-size:32px;margin:0;font-weight:800;}
-.hero p{margin-top:10px;color:rgba(255,255,255,0.9);}
-.section{padding:36px 0;}
-.section h3{color:var(--emerald);margin-bottom:8px;}
-.section p{color:var(--muted)}
-.search-wrap{display:flex;justify-content:center;margin:16px 0;}
-.search-wrap input{width:100%;max-width:420px;padding:10px 12px;border:1px solid rgba(5,150,105,0.12);border-radius:8px;}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:16px;}
-.card{background:var(--card);border:1px solid rgba(5,150,105,0.12);padding:16px;border-radius:10px;box-shadow:0 1px 4px rgba(2,6,23,0.04);transition:box-shadow .18s ease;}
-.card:hover{box-shadow:0 6px 18px rgba(2,6,23,0.08);}
-.card-title{margin:0;color:var(--emerald);font-size:16px;font-weight:700;}
-.card-cat{font-size:12px;color:var(--emerald-dark);margin-top:6px;font-weight:600;}
-.card-desc{color:var(--muted);margin-top:8px;font-size:14px;}
-.footer{background:var(--emerald);color:#fff;padding:16px 0;}
-.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:12px;}
-.footer .brand span{font-weight:700;}
-.no-results{text-align:center;color:var(--muted);width:100%;}
+export default function MedicationWebsite() {
+const [search, setSearch] = useState("");
+
+
+const medications = [
+{ name: "Paracetamol", category: "Pain Relief", desc: "Used to reduce fever and relieve mild to moderate pain such as headaches, muscle aches, and toothaches." },
+{ name: "Amoxicillin", category: "Antibiotic", desc: "An antibiotic that treats bacterial infections like pneumonia, bronchitis, and infections of the ear, nose, throat, or skin." },
+{ name: "Loperamide", category: "Digestive", desc: "Used to control and reduce the frequency of diarrhea by slowing down bowel movement." },
+{ name: "Cetirizine", category: "Allergy", desc: "An antihistamine that helps relieve allergy symptoms such as runny nose, sneezing, and itchy or watery eyes." },
+{ name: "Metformin", category: "Diabetes", desc: "A medication for managing type 2 diabetes by lowering blood sugar levels and improving the body’s response to insulin." },
+{ name: "Salbutamol", category: "Respiratory", desc: "A bronchodilator used to relieve symptoms of asthma and chronic obstructive pulmonary disease (COPD) by relaxing airway muscles." }
+];
+
+
+const filteredMeds = medications.filter(
+(med) =>
+med.name.toLowerCase().includes(search.toLowerCase()) ||
+med.category.toLowerCase().includes(search.toLowerCase())
+);
+
+
+return (
+<div className="min-h-screen flex flex-col bg-slate-50 text-slate-800">
+{/* HEADER */}
+<header className="sticky top-0 z-50 bg-white border-b border-emerald-300 shadow-sm">
+<div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+<div className="flex items-center gap-3">
+<img src="/adnu-logo.png" alt="ADNU Logo" className="w-12 h-12" />
+<h1 className="font-bold text-xl text-emerald-700">Luke4Med</h1>
+</div>
+<nav className="hidden md:flex items-center gap-6 text-sm">
+<a href="#about" className="hover:text-emerald-600">About</a>
+<a href="#medications" className="hover:text-emerald-600">Medications</a>
+<a href="#contact" className="hover:text-emerald-600">Contact</a>
+</nav>
+</div>
+</header>
+
+
+{/* HERO */}
+<section className="bg-emerald-600 text-white py-16">
+<div className="max-w-4xl mx-auto px-6 text-center">
+<motion.h2 initial={{opacity:0,y:-20}} animate={{opacity:1,y:0}} transition={{duration:0.6}} className="text-4xl font-extrabold">Welcome to Luke4Med</motion.h2>
+<p className="mt-4 text-lg text-emerald-100">A simple guide for people who want to understand medications and their purposes. Clear, reliable, and easy to read.</p>
+</div>
+</section>
+
+
+{/* ABOUT */}
+<section id="about" className="max-w-5xl mx-auto px-6 py-16">
+<h3 className="text-2xl font-bold text-emerald-700">About This Website</h3>
+<p className="mt-4 text-slate-600">Luke4Med is designed for individuals who may lack knowledge about medications. Our goal is to provide short, clear, and accurate descriptions of commonly used drugs, their purposes, and safe use information.</p>
+</section>
+
+
+{/* MEDICATIONS */}
+<section id="medications" className="bg-white border-t border-emerald-200 py-16">
+<div className="max-w-6xl mx-auto px-6">
+<h3 className="text-2xl font-bold text-emerald-700">Common Medications</h3>
+<p className="mt-2 text-slate-600">Browse through some commonly used medications and their purposes.</p>
+
+
+{/* Search Bar */}
+<div className="mt-6 mb-8 flex justify-center">
+<input
+type="text"
+value={search}
+onChange={(e) => setSearch(e.target.value)}
+placeholder="Search by name or category..."
+className="w-full max-w-md p-3 rounded-md border focus:outline-none focus:ring-2 focus:ring-emerald-500"
+/>
+</div>
